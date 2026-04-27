@@ -1,7 +1,7 @@
-import { motion, useMotionValue, useSpring, useScroll, useTransform, useInView } from 'motion/react';
-import { ArrowRight, Layers, Shield, Brain, Fingerprint, Activity, Sparkles, Database, Lock, Globe } from 'lucide-react';
+import { motion, useScroll, useTransform, useInView, AnimatePresence } from 'motion/react';
+import { ArrowRight, Layers, Shield, Brain, Fingerprint, Activity, Sparkles, Database, Lock, Globe, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const coreServices = [
   {
@@ -58,18 +58,11 @@ export default function Home() {
   const servicesRef = useRef<HTMLDivElement>(null);
   const statsRef = useRef<HTMLDivElement>(null);
   const abstractRef = useRef<HTMLDivElement>(null);
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  const springX = useSpring(mouseX, { stiffness: 50, damping: 20 });
-  const springY = useSpring(mouseY, { stiffness: 50, damping: 20 });
+  const [currentService, setCurrentService] = useState(0);
+  const [isCarouselHovered, setIsCarouselHovered] = useState(false);
 
   const { scrollYProgress } = useScroll();
-  
-  // Parallax for the dotted background
   const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '20%']);
-  
-  // Scroll-based logo animation
   const logoX = useTransform(scrollYProgress, [0, 1], ['-20%', '80%']);
 
   const servicesInView = useInView(servicesRef, { once: true, margin: '-100px' });
@@ -77,34 +70,21 @@ export default function Home() {
   const abstractInView = useInView(abstractRef, { once: true, margin: '-80px' });
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      mouseX.set(e.clientX);
-      mouseY.set(e.clientY);
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, [mouseX, mouseY]);
+    if (isCarouselHovered) return;
+    const interval = setInterval(() => {
+      setCurrentService(prev => (prev + 1) % coreServices.length);
+    }, 3500);
+    return () => clearInterval(interval);
+  }, [isCarouselHovered]);
 
   return (
     <div ref={containerRef} className="relative space-y-24 overflow-hidden">
-      {/* Interactive & Parallax Background */}
+      {/* Page-specific Parallax Background */}
       <div className="fixed inset-0 pointer-events-none z-0">
-        {/* Animated Mouse Follower */}
-        <motion.div
-          style={{
-            x: springX,
-            y: springY,
-            translateX: '-50%',
-            translateY: '-50%',
-          }}
-          className="absolute w-[800px] h-[800px] bg-purple-500/10 blur-[150px] rounded-full"
-        />
-        
         {/* Parallax Dotted Pattern */}
-        <motion.div 
+        <motion.div
           style={{ y: bgY }}
-          className="absolute inset-x-0 -inset-y-1/2 bg-[radial-gradient(#6d28d9_1px,transparent_1px)] [background-size:40px_40px] opacity-[0.07]" 
+          className="absolute inset-x-0 -inset-y-1/2 bg-[radial-gradient(#6d28d9_1px,transparent_1px)] [background-size:40px_40px] opacity-[0.07]"
         />
 
         {/* Floating Particles */}
@@ -262,39 +242,105 @@ export default function Home() {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {coreServices.map((service, idx) => (
-            <motion.div
-              key={service.abbr}
-              initial={{ opacity: 0, y: 30 }}
-              animate={servicesInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: idx * 0.1, duration: 0.5 }}
-              className={`relative group glass p-10 rounded-[2.5rem] shadow-sm hover:shadow-2xl ${service.shadowColor} transition-all border-white/40 overflow-hidden ${
-                idx === 0 ? 'md:col-span-2 lg:col-span-1' : ''
-              }`}
-            >
-              {/* Hover gradient overlay */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${service.gradient} opacity-0 group-hover:opacity-[0.03] transition-opacity duration-500 rounded-[2.5rem]`} />
-              
-              <div className="relative z-10">
-                <div className="flex items-center justify-between mb-8">
-                  <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${service.gradient} flex items-center justify-center text-white shadow-lg ${service.shadowColor}`}>
-                    {service.icon}
+        {/* Carousel */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={servicesInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5 }}
+          className="relative"
+          onMouseEnter={() => setIsCarouselHovered(true)}
+          onMouseLeave={() => setIsCarouselHovered(false)}
+        >
+          {/* Card Stage */}
+          <div className="relative overflow-hidden rounded-[3rem]">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentService}
+                initial={{ opacity: 0, x: 60 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -60 }}
+                transition={{ duration: 0.45, ease: 'easeInOut' }}
+                className={`relative glass p-10 md:p-16 rounded-[3rem] shadow-sm border-white/40 overflow-hidden min-h-[320px] flex flex-col justify-between`}
+              >
+                {/* Gradient background accent */}
+                <div className={`absolute inset-0 bg-gradient-to-br ${coreServices[currentService].gradient} opacity-[0.04] rounded-[3rem]`} />
+                <div className={`absolute -top-24 -right-24 w-64 h-64 bg-gradient-to-br ${coreServices[currentService].gradient} opacity-10 blur-[80px] rounded-full`} />
+
+                <div className="relative z-10">
+                  <div className="flex items-start justify-between mb-8">
+                    <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${coreServices[currentService].gradient} flex items-center justify-center text-white shadow-xl ${coreServices[currentService].shadowColor}`}>
+                      {coreServices[currentService].icon}
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className="text-[10px] font-bold text-slate-300 uppercase tracking-[0.3em]">
+                        {currentService + 1} / {coreServices.length}
+                      </span>
+                      <span className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.3em]">
+                        {coreServices[currentService].abbr}
+                      </span>
+                    </div>
                   </div>
-                  <span className="text-[10px] font-bold text-slate-300 uppercase tracking-[0.3em]">
-                    {service.abbr}
-                  </span>
+
+                  <h3 className="text-2xl md:text-3xl font-bold text-slate-900 mb-5 tracking-tight">
+                    {coreServices[currentService].title}
+                  </h3>
+                  <p className="text-base text-slate-500 leading-relaxed font-medium max-w-2xl">
+                    {coreServices[currentService].description}
+                  </p>
                 </div>
-                <h3 className="text-xl font-bold text-slate-900 mb-4 tracking-tight group-hover:text-purple-700 transition-colors">
-                  {service.title}
-                </h3>
-                <p className="text-sm text-slate-500 leading-relaxed font-medium">
-                  {service.description}
-                </p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+
+                {/* Pause indicator */}
+                {isCarouselHovered && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="absolute bottom-6 right-8 flex items-center gap-2 px-3 py-1.5 bg-white/60 backdrop-blur-sm rounded-full border border-white/80 shadow-sm"
+                  >
+                    <div className="flex gap-[3px]">
+                      <span className="w-[3px] h-3 bg-purple-500 rounded-full" />
+                      <span className="w-[3px] h-3 bg-purple-500 rounded-full" />
+                    </div>
+                    <span className="text-[9px] font-bold text-purple-600 uppercase tracking-widest">Paused</span>
+                  </motion.div>
+                )}
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          {/* Controls Row */}
+          <div className="flex items-center justify-between mt-8 px-2">
+            {/* Prev Button */}
+            <button
+              onClick={() => setCurrentService(prev => (prev - 1 + coreServices.length) % coreServices.length)}
+              className="w-12 h-12 glass rounded-2xl border-white/40 flex items-center justify-center text-slate-500 hover:text-purple-600 hover:shadow-lg hover:shadow-purple-500/10 transition-all active:scale-95"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </button>
+
+            {/* Dot Indicators */}
+            <div className="flex items-center gap-3">
+              {coreServices.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setCurrentService(idx)}
+                  className={`rounded-full transition-all duration-300 ${
+                    idx === currentService
+                      ? `w-8 h-2.5 bg-gradient-to-r ${coreServices[currentService].gradient}`
+                      : 'w-2.5 h-2.5 bg-slate-200 hover:bg-slate-300'
+                  }`}
+                />
+              ))}
+            </div>
+
+            {/* Next Button */}
+            <button
+              onClick={() => setCurrentService(prev => (prev + 1) % coreServices.length)}
+              className="w-12 h-12 glass rounded-2xl border-white/40 flex items-center justify-center text-slate-500 hover:text-purple-600 hover:shadow-lg hover:shadow-purple-500/10 transition-all active:scale-95"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </button>
+          </div>
+        </motion.div>
 
         {/* Additional microservices note */}
         <motion.div

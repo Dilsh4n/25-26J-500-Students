@@ -171,10 +171,10 @@ const ExpandableCard: React.FC<{ section: SectionData; idx: number }> = ({ secti
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 15 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: idx * 0.08, duration: 0.5 }}
-      layout
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.05 }}
+      transition={{ delay: idx * 0.06, duration: 0.45 }}
       className={`group glass rounded-[2rem] border-white/40 shadow-sm transition-shadow duration-300 overflow-hidden ${
         isExpanded
           ? 'shadow-xl shadow-purple-500/10 ring-1 ring-purple-200/50'

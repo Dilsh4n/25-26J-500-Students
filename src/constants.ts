@@ -174,7 +174,7 @@ export const PRESENTATIONS: PresentationLink[] = [
     id: 'pres-proposal',
     title: 'Proposal Presentation',
     date: 'August 29, 2025',
-    downloadUrl: 'https://mysliit-my.sharepoint.com/:p:/g/personal/it22345714_my_sliit_lk/IQD-nSrMfikPT7wvNaAVxKr4AWQVgPYol-3wwx9XBn0b5Xc?e=SP8Fls?download=1',    // ← Replace with OneDrive share link + ?download=1
+    downloadUrl: 'https://mysliit-my.sharepoint.com/:p:/g/personal/it22345714_my_sliit_lk/IQAzbk2yD8ihTpxxGPC5tkXuAaquqXFujHCBXiLftLDR3N8?e=7I5GDv?download=1',    // ← Replace with OneDrive share link + ?download=1
     fileType: 'PPTX',
   },
   {
