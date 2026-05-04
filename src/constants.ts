@@ -4,30 +4,58 @@ export const MILESTONES: Milestone[] = [
   {
     id: 'proposal',
     title: 'Project Proposal',
-    date: 'March 15, 2026',
-    marks: '10%',
-    description: 'Initial presentation of project scope, objectives, and feasibility.'
+    date: 'March 2025',
+    marks: '6 Marks',
+    description: 'A Project Proposal is presented to potential sponsors or clients to receive funding or get your project approved.'
   },
   {
     id: 'progress-1',
     title: 'Progress Presentation I',
-    date: 'May 20, 2026',
-    marks: '15%',
-    description: 'Demonstrating literature review results and architectural design.'
+    date: 'June 2025',
+    marks: '6 Marks',
+    description: 'Progress Presentation I reviews the 50% completion status of the project. This reveals any gaps or inconsistencies in the design/requirements.'
+  },
+  {
+    id: 'research-paper',
+    title: 'Research Paper',
+    date: 'July 2025',
+    marks: '10 Marks',
+    description: 'Describes what you contribute to existing knowledge, giving due recognition to all work that you referred to in making new knowledge.'
   },
   {
     id: 'progress-2',
     title: 'Progress Presentation II',
-    date: 'August 10, 2026',
-    marks: '20%',
-    description: 'Showcasing the core behavior modeling engine and initial evaluations.'
+    date: 'September 2025',
+    marks: '18 Marks',
+    description: 'Reviews the 90% completion status demonstration of the project, including a Poster presentation describing the project as a whole.'
   },
   {
-    id: 'final',
-    title: 'Final Assessment',
-    date: 'November 25, 2026',
-    marks: '55%',
-    description: 'Comprehensive review of the completed research effort and software implementation.'
+    id: 'website',
+    title: 'Website Assessment',
+    date: 'May 2026',
+    marks: '2 Marks',
+    description: 'The Website helps to promote our research project and reveals all details related to the project.'
+  },
+  {
+    id: 'logbook',
+    title: 'Logbook',
+    date: 'May 2026',
+    marks: '3 Marks',
+    description: 'The project status is validated through the Logbook, which includes Status Documents 1 & 2.'
+  },
+  {
+    id: 'final-report',
+    title: 'Final Report',
+    date: 'May 2026',
+    marks: '19 Marks',
+    description: 'The Final Report evaluates the completed project done throughout the year, including Individual, group, and final reports.'
+  },
+  {
+    id: 'final-presentation',
+    title: 'Final Presentation & Viva',
+    date: 'May 2026',
+    marks: '20 Marks',
+    description: 'Viva is held individually to assess each member\'s contribution to the project.'
   }
 ];
 

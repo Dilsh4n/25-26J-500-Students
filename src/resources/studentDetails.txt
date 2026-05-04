@@ -1,0 +1,23 @@
+researcher 1 (team leader)
+Name: De Vaas Gunawardana A. P. C. T 
+Index No: IT22334138
+email: IT22334138@my.sliit.lk
+photo: vaas.jpg
+
+researcher 2
+Name: Gamage D P 
+Index No: IT22345714
+email: IT22345714@my.sliit.lk
+photo: dilshan.jpg
+
+researcher 3
+Name: Gunasekara R P U S 
+Index No: IT22335128
+email: IT22335128@my.sliit.lk
+photo: supeshala.jpg
+
+researcher 4
+Name: Dayananda G AC T  
+Index No: IT22314338
+email: IT22314338@my.sliit.lk
+photo: chathura.jpg
